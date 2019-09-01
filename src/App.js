@@ -11,7 +11,8 @@ class App extends React.Component {
 	}
 	async componentDidMount(){
 		this.setState({loading:true});
-		const res= await fetch('https://api.github.com/users');
+		const res= await fetch(`https://api.github.com/users?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secret=${ process.env.REACT_APP_CLIENT_SECRET}`);
+		
 		res.json().then((data)=>{
 			this.setState({users:data});
 		})
