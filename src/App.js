@@ -1,4 +1,4 @@
-import React,{Fragment} from 'react';
+import React from 'react';
 import './App.css';
 import Navbar from './components/layout/navbar';
 import User from './components/user/users';
@@ -67,11 +67,11 @@ getuserrepos=async(username)=>{
 					 <Alert alert={this.state.alert}/>
 					 <Switch>
 					 <Route exact path='/' render={props=>(
-							 <Fragment>
+							 <div>
 								<Search searchuser={this.searchuser} 
 					 setalert={this.setalert} clearUser={this.clearuser} showclear={this.state.users.length>0?true:false}/>
 					 <User loading={this.state.loading} users={this.state.users}/>	 
-								 </Fragment>
+								 </div>
 							 )}/>
 						 <Route exact path='/about' component={About}/>
 						 <Route exact path='/user/:login' render={props=>(

@@ -115,6 +115,11 @@ img {
   border: #ccc 1px dotted;
   margin: 0.7rem 0;
 }
+.carduser {
+  padding: 4px;
+  border: #ccc 1px dotted;
+  margin: 4px auto;
+}
 
 /* List */
 .list {
