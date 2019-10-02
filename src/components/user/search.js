@@ -9,13 +9,20 @@ class Search extends Component{
 		}
 		onSubmit=(e)=>{
 			e.preventDefault();
-			this.props.searchuser(this.state.text);
-			this.setState({text:' '});
+			if(this.state.text===''){
+				this.props.setalert('Please enter something','light');
+			}
+			else{
+				this.props.searchuser(this.state.text);
+			this.setState({text:''});
+			}
+			
 		}
 		static propTypes={
 			searchuser:PropTypes.func.isRequired,
 			clearUser:PropTypes.func.isRequired,
-			showclear:PropTypes.bool.isRequired
+			showclear:PropTypes.bool.isRequired,
+			setalert:PropTypes.func.isRequired
 		}
 	render(){
 		return( 
