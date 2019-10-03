@@ -1,14 +1,14 @@
-import React,{Component,Fragment} from 'react';
+import React,{useEffect,Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import Spinner from '../layout/spinner';
 import Repos from '../repos/repos';
-class MyUser extends Component{
-	componentDidMount(){
-		this.props.getuser(this.props.match.params.login);
-		this.props.getuserrepos(this.props.match.params.login);
-		
-	}
-	render(){
+const MyUser=(props)=>{
+	useEffect(()=>{
+	props.getuser(props.match.params.login);
+		props.getuserrepos(props.match.params.login);
+		//eslint-disable-next-line
+	},[])
+	
 		const {
 			name,
 			avatar_url,
@@ -23,8 +23,8 @@ class MyUser extends Component{
 			hireable,
 			company
 			
-		}=this.props.user;
-		const{loading}=this.props;
+		}=props.user;
+		const{loading}=props;
 		
 		if(loading){
 			 return (<Spinner/>);
@@ -67,9 +67,9 @@ class MyUser extends Component{
 					<div className='badge badge-light'>Public Repos: {public_repos}</div>
 					<div className='badge badge-dark'>Public Gists :{public_gists}</div>
 				</div>
-				<Repos repos={this.props.repos}/>
+				<Repos repos={props.repos}/>
 			</Fragment>)
 		
 	}
-}
+
 export default MyUser;

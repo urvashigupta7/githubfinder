@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Fragment,useState} from 'react';
 import './App.css';
 import Navbar from './components/layout/navbar';
 import User from './components/user/users';
@@ -9,54 +9,51 @@ import About from './components/pages/about'
 import MyUser from './components/user/user';
 
 
-class App extends React.Component {
-	state={
-		users:[],
-		user:{},
-		loading:false,
-		alert:null,
-		repos:[]
-	}
+const App=()=> {
+	const[users,setUsers]=useState([]);
+	const[user,setUser]=useState({});
+	const[loading,setLoading]=useState(false);
+	const[alert,setAlert]=useState(null);
+	const[repos,setRepos]=useState([]);
 
-searchuser=async(text)=>{
-	this.setState({loading:true});
+const searchuser=async(text)=>{
+	setLoading(true);
 	const res= await fetch(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_CLIENT_ID}
 &client_secret=${ process.env.REACT_APP_CLIENT_SECRET}`);
 		res.json().then((data)=>{
-			this.setState({users:data.items})
+			setUsers(data.items)
 		})
-	this.setState({loading:false});
+	setLoading(false);
 }
-clearuser=()=>{
-	this.setState({
-	    users:[]})
+const clearuser=()=>{
+	setUsers([]);
 }	
-setalert=(msg,text)=>{
-	this.setState({alert:{
+const setalert=(msg,text)=>{
+	setAlert({
 		msg:msg,
 		type:text
-	}})
-	setTimeout(()=>this.setState({alert:null}),5000);
+	})
+	setTimeout(()=>setAlert(null),5000);
 }
-getuser=async(username)=>{
-	this.setState({loading:true});
+const getuser=async(username)=>{
+	setLoading(true);
 	const res= await fetch(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_CLIENT_ID}
 &client_secret=${ process.env.REACT_APP_CLIENT_SECRET}`);
 		res.json().then((data)=>{
-			this.setState({user:data})
+			setUser(data)
 		})
-	this.setState({loading:false});
+	setLoading(false);
 }
-getuserrepos=async(username)=>{
-	this.setState({loading:true});
+const getuserrepos=async(username)=>{
+	setLoading(true);
 	const res= await fetch(`https://api.github.com/users/${username}/repos?client_id=${process.env.REACT_APP_CLIENT_ID}
 &client_secret=${ process.env.REACT_APP_CLIENT_SECRET}`);
 		res.json().then((data)=>{
-			this.setState({repos:data})
+			setRepos(data)
 		})
-	this.setState({loading:false});
+	setLoading(false);
 }
-	render(){
+
 	
 		 return (
 			 <Router>
@@ -64,21 +61,21 @@ getuserrepos=async(username)=>{
 		  <Navbar title='GitHub Finder'/>
 				
 				 <div className="container">
-					 <Alert alert={this.state.alert}/>
+					 <Alert alert={alert}/>
 					 <Switch>
 					 <Route exact path='/' render={props=>(
-							 <div>
-								<Search searchuser={this.searchuser} 
-					 setalert={this.setalert} clearUser={this.clearuser} showclear={this.state.users.length>0?true:false}/>
-					 <User loading={this.state.loading} users={this.state.users}/>	 
-								 </div>
+							 <Fragment>
+								<Search searchuser={searchuser} 
+					 setalert={setalert} clearUser={clearuser} showclear={users.length>0?true:false}/>
+					 <User loading={loading} users={users}/>	 
+								 </Fragment>
 							 )}/>
 						 <Route exact path='/about' component={About}/>
 						 <Route exact path='/user/:login' render={props=>(
-								 <MyUser {...props} getuser={this.getuser} user={this.state.user}
-									 loading={this.state.loading}
-									 getuserrepos={this.getuserrepos}
-									 repos={this.state.repos}/>
+								 <MyUser {...props} getuser={getuser} user={user}
+									 loading={loading}
+									 getuserrepos={getuserrepos}
+									 repos={repos}/>
 									 
 								 )}
 								/>
@@ -91,6 +88,6 @@ getuserrepos=async(username)=>{
 				 </Router>
   );
 	}
-}
+
 
 export default App;

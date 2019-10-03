@@ -7,7 +7,7 @@ const Users=(props)=>{
 		}
 	else{
 		return (
-		<div>
+		
 				<div style={userStyle}>
 				{
 				       props.users.map(user=>(
@@ -16,7 +16,7 @@ const Users=(props)=>{
 				}
 					</div>					
 
-			</div>
+			
 		);
 }
 }
