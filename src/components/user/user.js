@@ -1,11 +1,13 @@
-import React,{useEffect,Fragment} from 'react';
+import React,{useEffect,Fragment,useContext} from 'react';
 import {Link} from 'react-router-dom';
 import Spinner from '../layout/spinner';
 import Repos from '../repos/repos';
+import GithubContext from '../../Context/github/githubContext';
 const MyUser=(props)=>{
+	const githubContext=useContext(GithubContext);
 	useEffect(()=>{
-	props.getuser(props.match.params.login);
-		props.getuserrepos(props.match.params.login);
+	githubContext.getuser(props.match.params.login);
+	githubContext.getuserrepos(props.match.params.login);
 		//eslint-disable-next-line
 	},[])
 	
@@ -23,10 +25,9 @@ const MyUser=(props)=>{
 			hireable,
 			company
 			
-		}=props.user;
-		const{loading}=props;
+		}=githubContext.user;
 		
-		if(loading){
+		if(githubContext.loading){
 			 return (<Spinner/>);
 		}
 		return(
@@ -67,7 +68,7 @@ const MyUser=(props)=>{
 					<div className='badge badge-light'>Public Repos: {public_repos}</div>
 					<div className='badge badge-dark'>Public Gists :{public_gists}</div>
 				</div>
-				<Repos repos={props.repos}/>
+				<Repos/>
 			</Fragment>)
 		
 	}
