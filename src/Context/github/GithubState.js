@@ -7,6 +7,16 @@ import {SEARCH_USERS,
 		GET_USER,
 		GET_REPOS
 	   } from '../types';
+let githubClientId;
+let githubClientSecret;
+if(process.env.NODE_ENV!=='production'){
+	githubClientId=process.env.REACT_APP_CLIENT_ID;
+	githubClientSecret=process.env.REACT_APP_CLIENT_SECRET;
+}
+else{
+	githubClientId=process.env.CLIENT_ID;
+	githubClientSecret=process.env.CLIENT_SECRET;
+}
 
 const GithubState=(props)=>{
 	const initialState={
@@ -19,8 +29,8 @@ const GithubState=(props)=>{
 	//SEARCH_USER
 	const searchuser=async(text)=>{
 	setLoading();
-	const res= await fetch(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_CLIENT_ID}
-&client_secret=${ process.env.REACT_APP_CLIENT_SECRET}`);
+	const res= await fetch(`https://api.github.com/search/users?q=${text}&client_id=${githubClientId}
+&client_secret=${githubClientSecret}`);
 		res.json().then((data)=>{  
 			dispatch({type: SEARCH_USERS,payload:data.items})
 		})
@@ -30,8 +40,8 @@ const GithubState=(props)=>{
 	//GET_USER
 	const getuser=async(username)=>{
 	setLoading();
-	const res= await fetch(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_CLIENT_ID}
-&client_secret=${ process.env.REACT_APP_CLIENT_SECRET}`);
+	const res= await fetch(`https://api.github.com/users/${username}?client_id=${githubClientId}
+&client_secret=${ githubClientSecret}`);
 		res.json().then((data)=>{
 			dispatch({type:GET_USER,payload:data});
 		})
@@ -41,8 +51,8 @@ const GithubState=(props)=>{
 	//GET_REPOS
 	const getuserrepos=async(username)=>{
 	setLoading();
-	const res= await fetch(`https://api.github.com/users/${username}/repos?client_id=${process.env.REACT_APP_CLIENT_ID}
-&client_secret=${ process.env.REACT_APP_CLIENT_SECRET}`);
+	const res= await fetch(`https://api.github.com/users/${username}/repos?client_id=${githubClientId}
+&client_secret=${githubClientSecret}`);
 		res.json().then((data)=>{
 			// setRepos(data)
 			dispatch({type:GET_REPOS,payload:data});
